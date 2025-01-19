@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose A Door</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden; /* Hide scrollbars */
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #stickFigure {
+      position: absolute;
+      width: 400px; /* Increased size of the GIF */
+      height: auto; /* Maintain aspect ratio */
+    }
+  </style>
+</head>
+<body>
+  <img id="stickFigure" src="media/still.png" alt="Still Stick Figure">
+  
+  <script>
+    // Get the image element
+    const stickFigure = document.getElementById('stickFigure');
+
+    // Initial position of the stick figure
+    let positionX = 0;
+    let positionY = 0; // Vertical position, if needed
+    const speed = 5; // Speed at which the figure moves (in pixels per key press)
+    const figureWidth = 200; // Width of the stick figure for boundary checking (adjusted to the new size)
+
+    // Track the current direction
+    let movingLeft = false;
+    let movingRight = false;
+    let lastDirection = 'none'; // Keeps track of the last direction pressed
+
+    // Function to change the image based on the direction (only when direction changes)
+    function changeImage(direction) {
+      if (direction === 'left' && stickFigure.src !== 'media/run.gif') {
+        stickFigure.src = 'media/run.gif'; // Left movement image
+      } else if (direction === 'right' && stickFigure.src !== 'media/right.gif') {
+        stickFigure.src = 'media/right.gif'; // Right movement image
+      }
+    }
+
+    // Move the figure based on arrow key presses
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight' && !movingRight) {
+        movingRight = true;
+        changeImage('right');
+        lastDirection = 'right'; // Update last direction to right
+      } else if (event.key === 'ArrowLeft' && !movingLeft) {
+        movingLeft = true;
+        changeImage('left');
+        lastDirection = 'left'; // Update last direction to left
+      }
+    });
+
+    document.addEventListener('keyup', function(event) {
+      if (event.key === 'ArrowRight') {
+        movingRight = false;
+      } else if (event.key === 'ArrowLeft') {
+        movingLeft = false;
+      }
+
+      // When no keys are pressed, switch to the correct still image based on the last direction
+      if (!movingLeft && !movingRight) {
+        if (lastDirection === 'left') {
+          stickFigure.src = 'media/still.png'; // Show still.png if last was left
+        } else if (lastDirection === 'right') {
+          stickFigure.src = 'media/still2.png'; // Show still2.png if last was right
+        }
+        lastDirection = 'none'; // Reset last direction to none when idle
+      }
+    });
+
+    function updatePosition() {
+      if (movingRight) {
+        positionX += speed;
+      } else if (movingLeft) {
+        positionX -= speed;
+      }
+
+      // Prevent the figure from moving off-screen
+      if (positionX < 0) {
+        positionX = 0;
+      } else if (positionX > window.innerWidth - figureWidth) {
+        positionX = window.innerWidth - figureWidth;
+      }
+
+      // Update the position of the stick figure
+      stickFigure.style.left = positionX + 'px';
+
+      // Call this function again for the next frame
+      requestAnimationFrame(updatePosition);
+    }
+
+    // Start the movement loop
+    updatePosition();
+  </script>
+</body>
+</html>
