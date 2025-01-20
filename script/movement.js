@@ -1,5 +1,5 @@
 // Get the image element
-    const stickFigure = document.getElementById('stickFigure');
+    const playerCharacter = document.getElementById('playerCharacter');
 
     // Initial position of the stick figure
     let positionX = 0;
@@ -14,10 +14,10 @@
 
     // Function to change the image based on the direction (only when direction changes)
     function changeImage(direction) {
-      if (direction === 'left' && stickFigure.src !== 'media/character-movement/left.gif') {
-        stickFigure.src = 'media/character-movement/left.gif'; 
-      } else if (direction === 'right' && stickFigure.src !== 'media/character-movement/right.gif') {
-        stickFigure.src = 'media/character-movement/right.gif'; 
+      if (direction === 'left' && playerCharacter.src !== 'media/character-movement/left.gif') {
+        playerCharacter.src = 'media/character-movement/left.gif'; 
+      } else if (direction === 'right' && playerCharacter.src !== 'media/character-movement/right.gif') {
+        playerCharacter.src = 'media/character-movement/right.gif'; 
       }
     }
 
@@ -44,9 +44,9 @@
       // When no keys are pressed, switch to the correct still image based on the last direction
       if (!movingLeft && !movingRight) {
         if (lastDirection === 'left') {
-          stickFigure.src = 'media/character-movement/left.png';
+          playerCharacter.src = 'media/character-movement/left.png';
         } else if (lastDirection === 'right') {
-          stickFigure.src = 'media/character-movement/right.png';
+          playerCharacter.src = 'media/character-movement/right.png';
         }
         lastDirection = 'none';
       }
@@ -67,7 +67,7 @@
       }
 
       // Update the position of the stick figure
-      stickFigure.style.left = positionX + 'px';
+      playerCharacter.style.left = positionX + 'px';
 
       // Call this function again for the next frame
       requestAnimationFrame(updatePosition);

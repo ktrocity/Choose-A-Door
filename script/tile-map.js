@@ -1,15 +1,11 @@
-const GAME_WIDTH = 160;
-const GAME_HEIGHT = 160;
-const GAME_TILE = 32;
+const GAME_WIDTH = 3600;
+const GAME_HEIGHT = 1200;
+const GAME_TILE = 400;
 const ROWS = GAME_HEIGHT / GAME_TILE;
 const COLUMNS = GAME_WIDTH / GAME_TILE;
 
 const LEVEL1 = [
-    9, 9, 9, 9, 9,
-    9, 9, 9, 9, 9,
-    9, 9, 9, 9, 9,
-    9, 9, 9, 17, 9,
-    9, 9, 9, 9, 9,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
 ]
 
 function getTile(map, col, row){
@@ -23,7 +19,7 @@ window.addEventListener('load', function(){
     canvas.height = GAME_HEIGHT;
     console.log(ctx)
     const TILE_IMAGE = document.getElementById('tilemap');
-    const IMAGE_TILE = 32;
+    const IMAGE_TILE = 400;
     const IMAGE_COLS = TILE_IMAGE.width / IMAGE_TILE;
     
 let debug = false;
