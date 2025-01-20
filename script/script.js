@@ -4,7 +4,7 @@
     // Initial position of the stick figure
     let positionX = 0;
     let positionY = 0;
-    const speed = 5; 
+    const speed = 4; 
     const figureWidth = 200; 
 
     // Track the current direction
@@ -14,10 +14,10 @@
 
     // Function to change the image based on the direction (only when direction changes)
     function changeImage(direction) {
-      if (direction === 'left' && stickFigure.src !== 'media/left.gif') {
-        stickFigure.src = 'media/left.gif'; 
-      } else if (direction === 'right' && stickFigure.src !== 'media/right.gif') {
-        stickFigure.src = 'media/right.gif'; 
+      if (direction === 'left' && stickFigure.src !== 'media/character-movement/left.gif') {
+        stickFigure.src = 'media/character-movement/left.gif'; 
+      } else if (direction === 'right' && stickFigure.src !== 'media/character-movement/right.gif') {
+        stickFigure.src = 'media/character-movement/right.gif'; 
       }
     }
 
@@ -44,9 +44,9 @@
       // When no keys are pressed, switch to the correct still image based on the last direction
       if (!movingLeft && !movingRight) {
         if (lastDirection === 'left') {
-          stickFigure.src = 'media/left.png';
+          stickFigure.src = 'media/character-movement/left.png';
         } else if (lastDirection === 'right') {
-          stickFigure.src = 'media/right.png';
+          stickFigure.src = 'media/character-movement/right.png';
         }
         lastDirection = 'none';
       }
