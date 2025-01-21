@@ -10,14 +10,14 @@ box-sizing: border-box;}
 body {
 margin: 0;
 overflow: hidden;
-/* background-color: #fff;
-display: flex;
+background-color: #1B1B1B;
+/* display: flex;
 justify-content: center;
 align-items: center;
 height: 100vh  */
     
 canvas {
-background: #fff; 
+background: #1B1B1B; 
 position: relative;
 left: 50%;
 translate: -50% 0;
