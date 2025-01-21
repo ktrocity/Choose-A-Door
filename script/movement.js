@@ -1,8 +1,9 @@
+
 // Get the image element
     const playerCharacter = document.getElementById('playerCharacter');
 
     // Initial position of the stick figure
-    let positionX = 0;
+    let positionX = window.innerWidth * 0.58;
     let positionY = 0;
     const speed = 4; 
     const figureWidth = 200; 
@@ -66,7 +67,7 @@
         positionX = window.innerWidth - figureWidth;
       }
 
-      // Update the position of the stick figure
+      // Update the position
       playerCharacter.style.left = positionX + 'px';
 
       // Call this function again for the next frame
