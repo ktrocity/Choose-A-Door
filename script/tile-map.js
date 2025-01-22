@@ -42,7 +42,7 @@ window.addEventListener('load', function() {
         state: 'idle',           
         direction: 'right',
         frameTimer: 0,
-        frameDelay: 10,
+        frameDelay: 4,
     };
 
     const playerSpriteSheet = new Image();
