@@ -28,6 +28,39 @@ window.addEventListener('load', function() {
     const IMAGE_COLS = TILE_IMAGE.width / IMAGE_TILE;
 
     let debug = false;
+    
+// Rendering the Tile Map
+    
+    function drawLevel() {
+        for (let row = 0; row < ROWS; row++) {
+            for (let col = 0; col < COLUMNS; col++) {
+                const tile = getTile(LEVEL1, col, row);
+
+                const tileIndex = tile - 1;
+                const imageCol = tileIndex % IMAGE_COLS;
+                const imageRow = Math.floor(tileIndex / IMAGE_COLS);
+
+                ctx.drawImage(
+                    TILE_IMAGE,
+                    imageCol * IMAGE_TILE, imageRow * IMAGE_TILE,
+                    IMAGE_TILE, IMAGE_TILE,
+                    col * GAME_TILE, row * GAME_TILE,
+                    GAME_TILE, GAME_TILE
+                );
+
+                if (debug) {
+                    ctx.strokeRect(col * GAME_TILE, row * GAME_TILE, GAME_TILE, GAME_TILE);
+                }
+            }
+        }
+    }
+
+    function gameLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawLevel();
+        drawPlayer(ctx); 
+        requestAnimationFrame(gameLoop);
+    }
 
 // Defining the Player Character
     
@@ -61,11 +94,10 @@ window.addEventListener('load', function() {
             });
         }
 
-// Start the Game Loop After (Everything Loads? I think that's important?)
+// Start the Game Loop After (Everything Loads? I think that's important, but maybe it is not?)
         gameLoop(); 
     };
 
-    
 // This part is defining the mirroring so that I didn't have to include 2x images in my sprite sheet
     
     function drawPlayer(ctx) {
@@ -119,38 +151,8 @@ window.addEventListener('load', function() {
         }
     });
 
-    function drawLevel() {
-        for (let row = 0; row < ROWS; row++) {
-            for (let col = 0; col < COLUMNS; col++) {
-                const tile = getTile(LEVEL1, col, row);
-
-                const tileIndex = tile - 1;
-                const imageCol = tileIndex % IMAGE_COLS;
-                const imageRow = Math.floor(tileIndex / IMAGE_COLS);
-
-                ctx.drawImage(
-                    TILE_IMAGE,
-                    imageCol * IMAGE_TILE, imageRow * IMAGE_TILE,
-                    IMAGE_TILE, IMAGE_TILE,
-                    col * GAME_TILE, row * GAME_TILE,
-                    GAME_TILE, GAME_TILE
-                );
-
-                if (debug) {
-                    ctx.strokeRect(col * GAME_TILE, row * GAME_TILE, GAME_TILE, GAME_TILE);
-                }
-            }
-        }
-    }
-
-    function gameLoop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawLevel();
-        drawPlayer(ctx);  // Draw player with the running animation
-        requestAnimationFrame(gameLoop);
-    }
-
-    // Debug button to toggle grid
+// Grid On/Off
+    
     const debugButton = document.getElementById('debugButton');
     debugButton.addEventListener('click', function() {
         debug = !debug;
