@@ -36,10 +36,5 @@ padding: 75px 10px;}
     #controls > button {
         padding: 5px 8px;}    
     
-#playerCharacter {
-position: absolute;
-width: 11.25vw;
-height: auto;}
-    
 #tilemap {
 display: none;}
