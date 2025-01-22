@@ -67,7 +67,7 @@ window.addEventListener('load', function() {
     const player = {
         positionX: 4.75 * GAME_TILE, 
         positionY: 0,            
-        speed: 5,                
+        speed: 4,                
         width: GAME_TILE,         
         height: GAME_TILE,        
         currentFrame: 0,  
@@ -75,7 +75,7 @@ window.addEventListener('load', function() {
         state: 'idle',           
         direction: 'right',
         frameTimer: 0,
-        frameDelay: 2,
+        frameDelay: 5,
     };
 
     const playerSpriteSheet = new Image();
