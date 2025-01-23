@@ -69,7 +69,7 @@ window.addEventListener('load', function() {
     const player = {
         positionX: 4.75 * GAME_TILE,
         positionY: 0,
-        speed: 10,
+        speed: 6,
         width: GAME_TILE,
         height: GAME_TILE,
         currentFrame: 0,
