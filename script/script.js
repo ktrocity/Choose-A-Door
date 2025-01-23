@@ -164,6 +164,34 @@ function gameLoop() {
     drawPlayer(ctx);
     requestAnimationFrame(gameLoop);}
 
+// Baby's First Collision
+    
+function checkCollisions() {
+    const tileX = 6 * GAME_TILE;
+    const tileY = 0 * GAME_TILE;
+    
+    if (player.positionX + player.width > tileX && 
+        player.positionX < tileX + GAME_TILE &&
+        player.positionY + player.height > tileY &&
+        player.positionY < tileY + GAME_TILE) {
+        player.positionX = tileX - player.width;}
+}
+
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawLevel();
+
+    if (moveLeft) {
+        player.positionX -= player.speed;} 
+    if (moveRight) {
+        player.positionX += player.speed;}
+
+    checkCollisions();
+
+    drawPlayer(ctx);
+
+    requestAnimationFrame(gameLoop);}
+    
 // Grid On/Off
     
 const debugButton = document.getElementById('debugButton');
