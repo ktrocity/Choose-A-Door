@@ -5,7 +5,7 @@ const GAME_HEIGHT = 1200;
 const GAME_TILE = 400;
 const ROWS = GAME_HEIGHT / GAME_TILE;
 const COLUMNS = GAME_WIDTH / GAME_TILE;
-const LEVEL_WIDTH = 8 * GAME_TILE;
+const LEVEL_WIDTH = 7.5 * GAME_TILE;
 const LEVEL_HEIGHT = 3 * GAME_TILE;
 
 const LEVEL1 = [
@@ -16,7 +16,7 @@ const LEVEL1 = [
 const COLLISIONS_LEFT = [
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0,];
+    0, 1, 0, 0, 0, 0, 0, 0,];
 
 const COLLISIONS_RIGHT = [
     0, 0, 0, 0, 0, 1, 0, 0,
@@ -28,10 +28,30 @@ const COLLISIONS_VERTICAL = [
     0, 0, 0, 0, 1, 1, 1, 0,
     1, 1, 1, 0, 0, 0, 0, 1,];
 
-const gravity = 0.5;
-const jumpStrength = -15;
+const jumpStrength = -1;
+const gravity = 1.2;    
 
-    let isJumping = false;
+let isJumping = false;
+
+    function updateJump() {
+        if (isJumping) {
+            velocityY += gravity;
+            player.positionY += velocityY;
+        if (player.positionY > LEVEL_HEIGHT) {
+            player.positionY = LEVEL_HEIGHT;
+            isJumping = false;
+            velocityY = 0;}}}
+
+    function stopJump() {
+        if (player.positionY <= 0) {
+            isJumping = false;
+            velocityY = 0; 
+            player.positionY = 0;}}
+
+    function startJump() {
+        if (player.onGround) {
+            isJumping = true;
+            velocityY = jumpStrength;}}
 
 function getTile(map, col, row) {
     return map[row * COLUMNS + col];}
