@@ -26,7 +26,7 @@ const COLLISIONS_RIGHT = [
 const COLLISIONS_VERTICAL = [
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 1, 1, 0,
-    1, 1, 1, 0, 1, 1, 1, 1,];
+    1, 1, 1, 0, 0, 0, 0, 1,];
 
 const gravity = 0.5;
 const jumpStrength = -15;
@@ -91,70 +91,93 @@ function drawLevel() {
         velocityY: 0,
         onGround: false};
 
-    const playerSpriteSheet = new Image();
+const playerSpriteSheet = new Image();
     playerSpriteSheet.src = 'media/character-movement/PlayerSprite.png';
 
-    const frameWidth = 400;
-    const frameHeight = 400;
-    const totalRunningFrames = 8;
+const frameWidth = 400;
+const frameHeight = 400;
+const totalRunningFrames = 8;
 
-    playerSpriteSheet.onload = function() {
-        for (let i = 0; i < totalRunningFrames; i++) {
-            player.frames.push({
-                x: i * frameWidth,
-                y: 0});}
-        gameLoop();};
+playerSpriteSheet.onload = function() {
+    for (let i = 0; i < totalRunningFrames; i++) {
+        player.frames.push({
+            x: i * frameWidth,
+            y: 400});}
+    
+const climbingRow = 800;
+const totalClimbingFrames = 4;
+    for (let i = 0; i < totalClimbingFrames; i++) {
+        player.frames.push({
+            x: i * frameWidth,
+            y: climbingRow});}
 
-// Rendering the Player Character & Defining the Mirror Imaging
+    gameLoop();};
 
-    function drawPlayer(ctx) {
-        const frame = player.frames[player.currentFrame];
+// Rendering the Player Character
 
-        if (player.direction === 'left') {
-            ctx.save();
-            ctx.scale(-1, 1);
+function drawPlayer(ctx) {
+    const frame = player.frames[player.currentFrame];
 
-            ctx.drawImage(
-                playerSpriteSheet,
-                frame.x, frame.y, frameWidth, frameHeight,
-                -player.positionX - player.width, player.positionY, player.width, player.height);
+    if (player.state === 'jumping' || player.state === 'climbing') {
+        const climbingRow = 800;
+        player.frames.forEach((frame, index) => {
+            if (frame.y === climbingRow) {
+                player.currentFrame = index;}});}
 
-            ctx.restore();}
+    if (player.direction === 'left') {
+        ctx.save();
+        ctx.scale(-1, 1);
+
+        ctx.drawImage(
+            playerSpriteSheet,
+            frame.x, frame.y, frameWidth, frameHeight,
+            -player.positionX - player.width, player.positionY, player.width, player.height);
+
+        ctx.restore();}
         else {
-            ctx.drawImage(
-                playerSpriteSheet,
-                frame.x, frame.y, frameWidth, frameHeight,
-                player.positionX, player.positionY, player.width, player.height);}
+        ctx.drawImage(
+            playerSpriteSheet,
+            frame.x, frame.y, frameWidth, frameHeight,
+            player.positionX, player.positionY, player.width, player.height);}
 
-        if (player.state === 'running') {
-            player.frameTimer++;}
+    if (player.state === 'running') {
+        player.frameTimer++;}
 
-        if (player.frameTimer >= player.frameDelay) {
-            player.frameTimer = 0;
-            player.currentFrame = (player.currentFrame + 1) % totalRunningFrames;}}
+    if (player.frameTimer >= player.frameDelay) {
+        player.frameTimer = 0;
+        player.currentFrame = (player.currentFrame + 1) % totalRunningFrames;}}
 
 // Left & Right Movement
 
     let moveLeft = false;
     let moveRight = false;
+    let moveUp = false;
 
-    window.addEventListener('keydown', function(event) {
-        if (event.key === 'ArrowLeft') {
-            moveLeft = true;
-            player.state = 'running';
-            player.direction = 'left';}
-        else if (event.key === 'ArrowRight') {
-            moveRight = true;
-            player.state = 'running';
-            player.direction = 'right';}});
 
-    window.addEventListener('keyup', function(event) {
-        if (event.key === 'ArrowLeft') {
-            moveLeft = false;
-            if (!moveRight) player.state = 'idle';}
-        else if (event.key === 'ArrowRight') {
-            moveRight = false;
-            if (!moveLeft) player.state = 'idle';}});
+window.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowLeft') {
+        moveLeft = true;
+        player.state = 'running';
+        player.direction = 'left';
+    } else if (event.key === 'ArrowRight') {
+        moveRight = true;
+        player.state = 'running';
+        player.direction = 'right';
+    } else if (event.key === 'ArrowUp') {
+        moveUp = true;
+        player.state = 'jumping';
+        player.direction = player.direction === 'left' ? 'left' : 'right';}});
+
+window.addEventListener('keyup', function(event) {
+    if (event.key === 'ArrowLeft') {
+        moveLeft = false;
+        if (!moveRight) player.state = 'idle';}
+    else if (event.key === 'ArrowRight') {
+        moveRight = false;
+        if (!moveLeft) player.state = 'idle';}
+    else if (event.key === 'ArrowUp') {
+        moveUp = false;
+        if (!moveLeft && !moveRight) player.state = 'idle';}});
 
 // Tile Collision Detection for Left and Right
 
@@ -166,7 +189,6 @@ function drawLevel() {
             return getCollisionLeft(nextTileX, nextTileY) === 1;}
         else if (direction === 'right') {
             return getCollisionRight(nextTileX, nextTileY) === 1;}
-
         return false;}
 
 // START GAME LOOP
@@ -175,58 +197,48 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawLevel();
 
-// Apply gravity to the player's vertical velocity
-if (!player.onGround) {
-    player.velocityY += gravity;}
+    if (!player.onGround) {
+        player.velocityY += gravity;}
     else {
-    player.velocityY = 0;}
+        player.velocityY = 0;}
 
-player.positionY += player.velocityY;
+    player.positionY += player.velocityY;
 
-// Check for collision with the ground
-const nextTileY = Math.floor((player.positionY + player.height) / GAME_TILE);
-const nextTileX = Math.floor(player.positionX / GAME_TILE);
+    const nextTileY = Math.floor((player.positionY + player.height) / GAME_TILE);
+    const nextTileX = Math.floor(player.positionX / GAME_TILE);
 
-if (COLLISIONS_VERTICAL[nextTileY * COLUMNS + nextTileX] === 1) {
-    player.positionY = nextTileY * GAME_TILE - player.height;
-    player.onGround = true;}
+    if (COLLISIONS_VERTICAL[nextTileY * COLUMNS + nextTileX] === 1) {
+        player.positionY = nextTileY * GAME_TILE - player.height;
+        player.onGround = true;}
     else {
-    player.onGround = false;}
+        player.onGround = false;}
 
-// Clamp the player character to the level boundaries
     player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
 
-// Handle movement with collision detection
     if (moveLeft) {
         const nextX = player.positionX - player.speed;
         if (!isCollidingWithWall(nextX, player.positionY, 'left')) {
             player.positionX = nextX;}}
+
     if (moveRight) {
         const nextX = player.positionX + player.speed;
         if (!isCollidingWithWall(nextX, player.positionY, 'right')) {
             player.positionX = nextX;}}
 
-// Draw the player after applying gravity and movement
+    if (moveUp) {
+        player.positionY -= GAME_TILE;}
+
+    // Draw the player with the updated frame based on their state
     drawPlayer(ctx);
     requestAnimationFrame(gameLoop);}
     
 // END GAME LOOP
 
-window.addEventListener('keyup', function(event) {
-    if (event.key === 'ArrowLeft') {
-        moveLeft = false;
-        if (!moveRight) player.state = 'idle';}
-    else if (event.key === 'ArrowRight') {
-        moveRight = false;
-        if (!moveLeft) player.state = 'idle';}});
-    
-
 // Grid On/Off
 
-    const debugButton = document.getElementById('debugButton');
-    debugButton.addEventListener('click', function() {
-        debug = !debug;
-        drawLevel();});
-});
+const debugButton = document.getElementById('debugButton');
+debugButton.addEventListener('click', function() {
+    debug = !debug;
+    drawLevel();});});
 
