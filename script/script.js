@@ -12,7 +12,7 @@ const LEVEL1 = [
     17, 18, 19, 20, 21, 22, 23, 24,];
 
 const COLLISIONS_LEFT = [
-    1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,];
 
@@ -20,6 +20,8 @@ const COLLISIONS_RIGHT = [
     0, 0, 0, 0, 0, 1, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,];
+
+const LEVEL_WIDTH = 8 * GAME_TILE;  
 
 function getTile(map, col, row) {
     return map[row * COLUMNS + col];}
@@ -77,7 +79,7 @@ window.addEventListener('load', function() {
         state: 'idle',
         direction: 'right',
         frameTimer: 0,
-        frameDelay: 8};
+        frameDelay: 6};
 
     const playerSpriteSheet = new Image();
     playerSpriteSheet.src = 'media/character-movement/PlayerSprite.png';
@@ -172,6 +174,10 @@ window.addEventListener('load', function() {
     function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawLevel();
+        
+// Clamp to level boundaries (left and right)
+player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
+        
 
 // Handle movement with collision detection
 
