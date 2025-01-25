@@ -207,11 +207,20 @@ if (COLLISIONS_VERTICAL[nextTileY * COLUMNS + nextTileX] === 1) {
         if (!isCollidingWithWall(nextX, player.positionY, 'right')) {
             player.positionX = nextX;}}
 
-// I don't understand why this is here, but the whole thing breaks if you delete it.
+// Draw the player after applying gravity and movement
     drawPlayer(ctx);
     requestAnimationFrame(gameLoop);}
     
-// END GAME LOOP    
+// END GAME LOOP
+
+window.addEventListener('keyup', function(event) {
+    if (event.key === 'ArrowLeft') {
+        moveLeft = false;
+        if (!moveRight) player.state = 'idle';}
+    else if (event.key === 'ArrowRight') {
+        moveRight = false;
+        if (!moveLeft) player.state = 'idle';}});
+    
 
 // Grid On/Off
 
