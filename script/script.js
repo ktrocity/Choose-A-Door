@@ -2,33 +2,45 @@
 
 const GAME_WIDTH = 3200;
 const GAME_HEIGHT = 1200;
-const GAME_TILE = 400;
+const GAME_TILE = 200;
 const ROWS = GAME_HEIGHT / GAME_TILE;
 const COLUMNS = GAME_WIDTH / GAME_TILE;
-const LEVEL_WIDTH = 7.5 * GAME_TILE;
-const LEVEL_HEIGHT = 3 * GAME_TILE;
+const LEVEL_WIDTH = 16 * GAME_TILE;
+const LEVEL_HEIGHT = 6 * GAME_TILE;
 
 const LEVEL1 = [
-    1, 2, 3, 4, 5, 6, 7, 8,
-    9, 10, 11, 12, 13, 14, 15, 16,
-    17, 18, 19, 20, 21, 22, 23, 24,];
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+    33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,];
 
 const COLLISIONS_LEFT = [
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0,];
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
 
 const COLLISIONS_RIGHT = [
-    0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 1,];
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,];
 
 const COLLISIONS_VERTICAL = [
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 1, 1, 0,
-    1, 1, 1, 0, 0, 0, 0, 1,];
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,];
 
-const jumpStrength = -1;
+const jumpStrength = -20;
 const gravity = 1.2;    
 
 let isJumping = false;
@@ -69,7 +81,7 @@ window.addEventListener('load', function() {
     canvas.height = GAME_HEIGHT;
 
     const TILE_IMAGE = document.getElementById('tilemap');
-    const IMAGE_TILE = 400;
+    const IMAGE_TILE = 200;
     const IMAGE_COLS = TILE_IMAGE.width / IMAGE_TILE;
 
     let debug = false;
@@ -97,18 +109,18 @@ function drawLevel() {
 // Defining the Player Character
 
     const player = {
-        positionX: 4.75 * GAME_TILE,
+        positionX: 9.5 * GAME_TILE,
         positionY: 0,
-        speed: 5,
-        width: GAME_TILE,
-        height: GAME_TILE,
+        speed: 15,
+        width: 2 * GAME_TILE,
+        height: 2 * GAME_TILE,
         currentFrame: 0,
         frames: [],
         state: 'idle',
         direction: 'right',
         frameTimer: 0,
         frameDelay: 6,
-        velocityY: 0,
+        velocityY: -10,
         onGround: false};
 
 const playerSpriteSheet = new Image();
@@ -117,19 +129,12 @@ const playerSpriteSheet = new Image();
 const frameWidth = 400;
 const frameHeight = 400;
 const totalRunningFrames = 8;
-
+    
 playerSpriteSheet.onload = function() {
     for (let i = 0; i < totalRunningFrames; i++) {
         player.frames.push({
             x: i * frameWidth,
             y: 400});}
-    
-const climbingRow = 800;
-const totalClimbingFrames = 4;
-    for (let i = 0; i < totalClimbingFrames; i++) {
-        player.frames.push({
-            x: i * frameWidth,
-            y: climbingRow});}
 
     gameLoop();};
 
@@ -137,12 +142,6 @@ const totalClimbingFrames = 4;
 
 function drawPlayer(ctx) {
     const frame = player.frames[player.currentFrame];
-
-    if (player.state === 'jumping' || player.state === 'climbing') {
-        const climbingRow = 800;
-        player.frames.forEach((frame, index) => {
-            if (frame.y === climbingRow) {
-                player.currentFrame = index;}});}
 
     if (player.direction === 'left') {
         ctx.save();
@@ -210,7 +209,7 @@ window.addEventListener('keyup', function(event) {
         else if (direction === 'right') {
             return getCollisionRight(nextTileX, nextTileY) === 1;}
         return false;}
-
+    
 // START GAME LOOP
 
 function gameLoop() {
@@ -253,8 +252,8 @@ function gameLoop() {
     drawPlayer(ctx);
     requestAnimationFrame(gameLoop);}
     
-// END GAME LOOP
-
+// END GAME LOOP  
+    
 // Grid On/Off
 
 const debugButton = document.getElementById('debugButton');
