@@ -17,31 +17,31 @@ const LEVEL1 = [
     81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,];
 
 const COLLISIONS_LEFT = [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,];
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,];
 
 const COLLISIONS_RIGHT = [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,];
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,];
 
 const COLLISIONS_VERTICAL = [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-    1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,];
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,];
 
-const jumpStrength = -30;
-const gravity = .5;    
+const jumpStrength = 30;
+const gravity = 1.5;    
 
 let isJumping = false;
 
@@ -49,21 +49,6 @@ let isJumping = false;
         if (player.onGround) {
             isJumping = true;
             velocityY = jumpStrength;}}
-
-    function updateJump() {
-        if (isJumping) {
-            velocityY += gravity;
-            player.positionY += velocityY;
-        if (player.positionY > LEVEL_HEIGHT) {
-            player.positionY = LEVEL_HEIGHT;
-            isJumping = false;
-            velocityY = 0;}}}
-
-    function stopJump() {
-        if (player.positionY <= 0) {
-            isJumping = false;
-            velocityY = 0; 
-            player.positionY = 0;}}
 
 function getTile(map, col, row) {
     return map[row * COLUMNS + col];}
@@ -120,7 +105,7 @@ function drawLevel() {
         direction: 'right',
         frameTimer: 0,
         frameDelay: 6,
-        velocityY: -10,
+        velocityY: 30,
         onGround: false};
 
 const playerSpriteSheet = new Image();
@@ -183,7 +168,7 @@ window.addEventListener('keydown', function(event) {
         player.state = 'running';
         player.direction = 'right';
     } else if (event.key === 'ArrowUp') {
-        moveUp = true;
+        moveUp = jumpStrength;
         player.state = 'jumping';
         player.direction = player.direction === 'left' ? 'left' : 'right';}});
 
@@ -222,8 +207,6 @@ function gameLoop() {
         player.velocityY = 0;}
 
     player.positionY += player.velocityY;
-    
-    updateJump();
 
     const nextTileY = Math.floor((player.positionY + player.height) / GAME_TILE);
     const nextTileX = Math.floor(player.positionX / GAME_TILE);
@@ -248,7 +231,7 @@ function gameLoop() {
             player.positionX = nextX;}}
 
     if (moveUp) {
-        player.positionY -= GAME_TILE;}
+        player.positionY -= jumpStrength;}
 
     // Draw the player with the updated frame based on their state
     drawPlayer(ctx);
