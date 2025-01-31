@@ -122,19 +122,31 @@ const playerSpriteSheet = new Image();
 const frameWidth = 400;
 const frameHeight = 400;
 const totalRunningFrames = 8;
+const totalIdleFrames = 8;
     
 playerSpriteSheet.onload = function() {
     for (let i = 0; i < totalRunningFrames; i++) {
         player.frames.push({
             x: i * frameWidth,
             y: 400});}
+    
+player.idleFrames = [];
+    for (let i = 0; i < totalIdleFrames; i++) {
+        player.idleFrames.push({
+            x: i * frameWidth,
+            y: 0 });}
 
     gameLoop();};
 
 // Rendering the Player Character
 
 function drawPlayer(ctx) {
-    const frame = player.frames[player.currentFrame];
+    let frame;
+    
+    if (player.state === 'idle') {
+        frame = player.idleFrames[player.currentFrame % totalIdleFrames];}
+    else {
+        frame = player.frames[player.currentFrame % totalRunningFrames];}
 
     if (player.direction === 'left') {
         ctx.save();
@@ -155,9 +167,19 @@ function drawPlayer(ctx) {
     if (player.state === 'running') {
         player.frameTimer++;}
 
+    player.frameTimer++;
     if (player.frameTimer >= player.frameDelay) {
         player.frameTimer = 0;
-        player.currentFrame = (player.currentFrame + 1) % totalRunningFrames;}}
+        player.currentFrame++;
+
+        if (player.state === 'idle') {
+            player.currentFrame %= totalIdleFrames; // Loop through idle animation
+        } else {
+            player.currentFrame %= totalRunningFrames; // Loop through running animation
+        }
+    }
+}    
+
 
 // Left & Right Movement
 
