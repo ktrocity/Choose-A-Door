@@ -178,37 +178,21 @@ function drawPlayer(ctx) {
             player.currentFrame %= totalRunningFrames;}}}    
 
 
-// Left & Right Movement
+// keyup, keydown
 
-    let moveLeft = false;
-    let moveRight = false;
-    let moveUp = false;
-
+const keys = {
+    ArrowLeft: false,
+    ArrowRight: false,
+    ArrowUp: false};
 
 window.addEventListener('keydown', function(event) {
-    if (event.key === 'ArrowLeft') {
-        moveLeft = true;
-        player.state = 'running';
-        player.direction = 'left';
-    } else if (event.key === 'ArrowRight') {
-        moveRight = true;
-        player.state = 'running';
-        player.direction = 'right';
-    } else if (event.key === 'ArrowUp') {
-        moveUp = jumpStrength;
-        player.state = 'jumping';
-        player.direction = player.direction === 'left' ? 'left' : 'right';}});
+    if (event.key in keys) {
+        keys[event.key] = true;}});
 
 window.addEventListener('keyup', function(event) {
-    if (event.key === 'ArrowLeft') {
-        moveLeft = false;
-        if (!moveRight) player.state = 'idle';}
-    else if (event.key === 'ArrowRight') {
-        moveRight = false;
-        if (!moveLeft) player.state = 'idle';}
-    else if (event.key === 'ArrowUp') {
-        moveUp = false;
-        if (!moveLeft && !moveRight) player.state = 'idle';}});
+    if (event.key in keys) {
+        keys[event.key] = false;}});
+
 
 // Tile Collision Detection for Left and Right
 
@@ -224,7 +208,12 @@ window.addEventListener('keyup', function(event) {
     
 // START GAME LOOP
 
-function gameLoop() {
+let lastTime = 0;
+
+function gameLoop(timestamp) {
+    const deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
+    lastTime = timestamp;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawLevel();
 
@@ -244,23 +233,32 @@ function gameLoop() {
     else {
         player.onGround = false;}
 
-    player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
-    player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
+    let moveSpeed = player.speed * deltaTime * 60;
 
-    if (moveLeft) {
-        const nextX = player.positionX - player.speed;
+    if (keys.ArrowLeft) {
+        player.state = 'running';
+        player.direction = 'left';
+        const nextX = player.positionX - moveSpeed;
         if (!isCollidingWithWall(nextX, player.positionY, 'left')) {
             player.positionX = nextX;}}
 
-    if (moveRight) {
-        const nextX = player.positionX + player.speed;
+    if (keys.ArrowRight) {
+        player.state = 'running';
+        player.direction = 'right';
+        const nextX = player.positionX + moveSpeed;
         if (!isCollidingWithWall(nextX, player.positionY, 'right')) {
             player.positionX = nextX;}}
 
-    if (moveUp) {
-        player.positionY -= jumpStrength;}
+    if (!keys.ArrowLeft && !keys.ArrowRight) {
+        player.state = 'idle';}
 
-    // Draw the player with the updated frame based on their state
+    if (keys.ArrowUp && player.onGround) {
+        player.velocityY = -jumpStrength; 
+        player.onGround = false;}
+
+    player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
+    player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
+
     drawPlayer(ctx);
     requestAnimationFrame(gameLoop);}
     
