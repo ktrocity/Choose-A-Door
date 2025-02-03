@@ -215,7 +215,8 @@ function drawPlayer(ctx) {
 const keys = {
     ArrowLeft: false,
     ArrowRight: false,
-    ArrowUp: false};
+    ArrowUp: false,
+    ArrowDown: false,};
 
 window.addEventListener('keydown', function(event) {
     if (event.key in keys) {
@@ -236,7 +237,7 @@ window.addEventListener('keyup', function(event) {
             return getCollisionLeft(nextTileX, nextTileY) === 1;}
         else if (direction === 'right') {
             return getCollisionRight(nextTileX, nextTileY) === 1;}
-        return false;}
+        return false;}    
     
 // START GAME LOOP
 
@@ -287,6 +288,15 @@ function gameLoop(timestamp) {
     if (keys.ArrowUp && player.onGround && player.positionY > 0) {
         player.velocityY = -jumpStrength;
         player.onGround = false;}
+    
+    if (keys.ArrowDown && player.onGround
+        && player.positionX > .5 * GAME_TILE && player.positionX < 3 * GAME_TILE){
+            location.reload();}
+    
+    if (keys.ArrowDown && player.onGround
+        && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
+        && player.positionY < 5 * GAME_TILE){
+            location.reload();}
 
     player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
