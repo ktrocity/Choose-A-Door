@@ -29,7 +29,7 @@ width: 90vw;}
 #controls {
 display: flex;
 justify-content: space-around;
-padding: 75px 10px;}
+padding: 20px 10px;}
     
     #controls > button {
         padding: 5px 8px;}    
