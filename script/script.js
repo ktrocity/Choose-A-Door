@@ -110,6 +110,7 @@ window.addEventListener('load', function() {
     const IMAGE_COLS = TILE_IMAGE.width / IMAGE_TILE;
 
     let debug = false;
+    let restart = false;
 
 // Rendering the Tile Map?
     
@@ -130,6 +131,8 @@ function drawLevel() {
 
             if (debug) {
                 ctx.strokeRect(col * GAME_TILE, row * GAME_TILE, GAME_TILE, GAME_TILE);}}}}
+    
+    
 
 // Defining the Player Character
 
@@ -311,5 +314,11 @@ function gameLoop(timestamp) {
 const debugButton = document.getElementById('debugButton');
 debugButton.addEventListener('click', function() {
     debug = !debug;
-    drawLevel();});});
+    drawLevel();});
 
+const restartButton = document.getElementById('restartButton');
+restartButton.addEventListener('click', function() {
+    location.reload();});
+    
+});    
+    
