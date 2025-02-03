@@ -287,7 +287,7 @@ function gameLoop(timestamp) {
     if (keys.ArrowUp && player.onGround && player.positionY > 0) {
         player.velocityY = -jumpStrength;
         player.onGround = false;}
-    
+
     player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
 
