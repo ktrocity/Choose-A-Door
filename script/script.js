@@ -139,7 +139,7 @@ function drawLevel() {
     const player = {
         positionX: 12 * GAME_TILE,
         positionY: 0,
-        speed: 15,
+        speed: 8,
         width: 4 * GAME_TILE,
         height: 4 * GAME_TILE,
         currentFrame: 0,
@@ -153,6 +153,7 @@ function drawLevel() {
 
 const playerSpriteSheet = new Image();
     playerSpriteSheet.src = 'media/character-movement/PlayerSprite.png';
+    
 
 const frameWidth = 400;
 const frameHeight = 400;
@@ -241,11 +242,26 @@ window.addEventListener('keyup', function(event) {
         else if (direction === 'right') {
             return getCollisionRight(nextTileX, nextTileY) === 1;}
         return false;}    
+
+// Losing Animation 
+    
+
+const lose = new Image();
+    lose.src = 'media/lose.png';
+
+function triggerAnimation() {
+    console.log("Animation triggered!");
+    const positionX = 20.5 * GAME_TILE;
+    const positionY = 1 * GAME_TILE;
+    ctx.drawImage(lose, positionX, positionY);}
+
+    
     
 // START GAME LOOP
 
 let lastTime = 0;
-
+let keyPressed = false;
+    
 function gameLoop(timestamp) {
     const deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
     lastTime = timestamp;
@@ -299,7 +315,7 @@ function gameLoop(timestamp) {
     if (keys.ArrowDown && player.onGround
         && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
         && player.positionY < 5 * GAME_TILE){
-            location.reload();}
+            triggerAnimation();}
 
     player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
