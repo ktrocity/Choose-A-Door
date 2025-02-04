@@ -1,3 +1,10 @@
+// Shut it All Down
+
+let debug = false;
+let restart = false;
+let isJumping = false;
+let lastTime = 0;
+
 // Defining the Tile Map Grid Structure
 
 const GAME_WIDTH = 3200;
@@ -83,12 +90,10 @@ const COLLISIONS_VERTICAL = [
 const jumpStrength = 30;
 const gravity = 1.5;    
 
-let isJumping = false;
-
-    function startJump() {
-        if (player.onGround) {
-            isJumping = true;
-            velocityY = jumpStrength;}}
+function startJump() {
+    if (player.onGround) {
+        isJumping = true;
+        velocityY = jumpStrength;}}
 
 function getTile(map, col, row) {
     return map[row * COLUMNS + col];}
@@ -109,8 +114,6 @@ window.addEventListener('load', function() {
     const IMAGE_TILE = 100;
     const IMAGE_COLS = TILE_IMAGE.width / IMAGE_TILE;
 
-    let debug = false;
-    let restart = false;
 
 // Rendering the Tile Map?
     
@@ -131,35 +134,31 @@ function drawLevel() {
 
             if (debug) {
                 ctx.strokeRect(col * GAME_TILE, row * GAME_TILE, GAME_TILE, GAME_TILE);}}}}
-    
-    
 
 // Defining the Player Character
 
-    const player = {
-        positionX: 12 * GAME_TILE,
-        positionY: 0,
-        speed: 8,
-        width: 4 * GAME_TILE,
-        height: 4 * GAME_TILE,
-        currentFrame: 0,
-        frames: [],
-        state: 'idle',
-        direction: 'left',
-        frameTimer: 0,
-        frameDelay: 6,
-        velocityY: 30,
-        onGround: false};
+const player = {
+    positionX: 12 * GAME_TILE,
+    positionY: 0,
+    speed: 8,
+    width: 4 * GAME_TILE,
+    height: 4 * GAME_TILE,
+    currentFrame: 0,
+    frames: [],
+    state: 'idle',
+    direction: 'left',
+    frameTimer: 0,
+    frameDelay: 6,
+    velocityY: 30,
+    onGround: false};
 
 const playerSpriteSheet = new Image();
     playerSpriteSheet.src = 'media/character-movement/PlayerSprite.png';
-    
 
 const frameWidth = 400;
 const frameHeight = 400;
 const totalRunningFrames = 8;
 const totalIdleFrames = 8;
-
     
 playerSpriteSheet.onload = function() {
     for (let i = 0; i < totalRunningFrames; i++) {
@@ -233,15 +232,15 @@ window.addEventListener('keyup', function(event) {
 
 // Tile Collision Detection for Left and Right
 
-    function isCollidingWithWall(nextX, nextY, direction) {
-        const nextTileX = Math.floor(nextX / GAME_TILE);
-        const nextTileY = Math.floor(nextY / GAME_TILE);
+function isCollidingWithWall(nextX, nextY, direction) {
+    const nextTileX = Math.floor(nextX / GAME_TILE);
+    const nextTileY = Math.floor(nextY / GAME_TILE);
 
-        if (direction === 'left') {
-            return getCollisionLeft(nextTileX, nextTileY) === 1;}
-        else if (direction === 'right') {
-            return getCollisionRight(nextTileX, nextTileY) === 1;}
-        return false;}    
+    if (direction === 'left') {
+        return getCollisionLeft(nextTileX, nextTileY) === 1;}
+    else if (direction === 'right') {
+        return getCollisionRight(nextTileX, nextTileY) === 1;}
+    return false;}    
 
 // Losing Animation 
 
@@ -249,7 +248,6 @@ const lose = new Image();
     lose.src = 'media/lose.png';
 
 function triggerLoser() {
-    console.log("Animation triggered!");
     const positionX = 20.5 * GAME_TILE;
     const positionY = 1 * GAME_TILE;
     ctx.drawImage(lose, positionX, positionY);}
@@ -257,18 +255,14 @@ function triggerLoser() {
 // Winning Animation 
 
 const win = new Image();
-    win.src = 'media/lose.png';
-
+    win.src = 'media/lose.png';    
+    
 function triggerWinner() {
-    console.log("Animation triggered!");
     const positionX = 2.5 * GAME_TILE;
     const positionY = 7 * GAME_TILE;
-    ctx.drawImage(lose, positionX, positionY);}    
-    
+    ctx.drawImage(lose, positionX, positionY);}
     
 // START GAME LOOP
-
-let lastTime = 0;
     
 function gameLoop(timestamp) {
     const deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
@@ -343,6 +337,5 @@ debugButton.addEventListener('click', function() {
 const restartButton = document.getElementById('restartButton');
 restartButton.addEventListener('click', function() {
     location.reload();});
-    
 });    
     
