@@ -28,7 +28,7 @@ const LEVEL1 = [
 
 const COLLISIONS_LEFT = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -244,23 +244,31 @@ window.addEventListener('keyup', function(event) {
         return false;}    
 
 // Losing Animation 
-    
 
 const lose = new Image();
     lose.src = 'media/lose.png';
 
-function triggerAnimation() {
+function triggerLoser() {
     console.log("Animation triggered!");
     const positionX = 20.5 * GAME_TILE;
     const positionY = 1 * GAME_TILE;
     ctx.drawImage(lose, positionX, positionY);}
 
+// Winning Animation 
+
+const win = new Image();
+    win.src = 'media/lose.png';
+
+function triggerWinner() {
+    console.log("Animation triggered!");
+    const positionX = 2.5 * GAME_TILE;
+    const positionY = 7 * GAME_TILE;
+    ctx.drawImage(lose, positionX, positionY);}    
     
     
 // START GAME LOOP
 
 let lastTime = 0;
-let keyPressed = false;
     
 function gameLoop(timestamp) {
     const deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
@@ -310,12 +318,12 @@ function gameLoop(timestamp) {
     
     if (keys.ArrowDown && player.onGround
         && player.positionX > .5 * GAME_TILE && player.positionX < 3 * GAME_TILE){
-            location.reload();}
+            triggerWinner();}
     
     if (keys.ArrowDown && player.onGround
         && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
         && player.positionY < 5 * GAME_TILE){
-            triggerAnimation();}
+            triggerLoser();}
 
     player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
