@@ -243,24 +243,65 @@ function isCollidingWithWall(nextX, nextY, direction) {
     return false;}    
 
 // Losing Animation 
+    
+function checkLoser() {
+    lost();
+    drawLoseScreen();
+    requestAnimationFrame(update);}    
 
-const lose = new Image();
-    lose.src = 'media/lose.png';
+const loseImage = new Image();
+loseImage.src = 'media/lose.png';
+
+let hasLost = false;
 
 function triggerLoser() {
-    const positionX = 20.5 * GAME_TILE;
-    const positionY = 1 * GAME_TILE;
-    ctx.drawImage(lose, positionX, positionY);}
+    hasLost = true;}
+
+function drawLoseScreen() {
+    if (hasLost) {
+        const positionX = 20.5 * GAME_TILE;
+        const positionY = 1 * GAME_TILE;
+        ctx.drawImage(loseImage, positionX, positionY);}}
+
+function lost() {
+    if (doorA()) {
+        triggerLoser();}}
+
+const doorA = () => {  
+    return keys.ArrowDown && player.onGround
+        && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
+        && player.positionY < 5 * GAME_TILE;};
+
 
 // Winning Animation 
 
-const win = new Image();
-    win.src = 'media/lose.png';    
+function checkWinner() {
+    won();
+    drawWinScreen();
+    requestAnimationFrame(update);}    
+    
+const winImage = new Image();
+winImage.src = 'media/lose.png';
+    
+let hasWon = false;
     
 function triggerWinner() {
-    const positionX = 2.5 * GAME_TILE;
-    const positionY = 7 * GAME_TILE;
-    ctx.drawImage(lose, positionX, positionY);}
+    hasWon = true;}
+    
+function drawWinScreen() {
+    if (hasWon) {
+        const positionX = 2.5 * GAME_TILE;
+        const positionY = 7 * GAME_TILE;
+        ctx.drawImage(winImage, positionX, positionY);}}
+    
+function won() {
+    if (doorB()) {
+        triggerWinner();}}
+
+const doorB = () => {
+    return keys.ArrowDown && player.onGround
+        && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
+        && player.positionY < 5 * GAME_TILE;};
     
 // START GAME LOOP
     
@@ -313,17 +354,15 @@ function gameLoop(timestamp) {
     if (keys.ArrowDown && player.onGround
         && player.positionX > .5 * GAME_TILE && player.positionX < 3 * GAME_TILE){
             triggerWinner();}
-    
-    if (keys.ArrowDown && player.onGround
-        && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
-        && player.positionY < 5 * GAME_TILE){
-            triggerLoser();}
 
     player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
 
     drawPlayer(ctx);
-    requestAnimationFrame(gameLoop);}
+    requestAnimationFrame(gameLoop);
+
+    checkWinner();
+    checkLoser();}
     
 // END GAME LOOP  
     
