@@ -247,7 +247,7 @@ function isCollidingWithWall(nextX, nextY, direction) {
 function checkLoser() {
     lost();
     drawLoseScreen();
-    requestAnimationFrame(update);}    
+    requestAnimationFrame(checkLoser);}    
 
 const loseImage = new Image();
 loseImage.src = 'media/lose.png';
@@ -278,7 +278,7 @@ const doorA = () => {
 function checkWinner() {
     won();
     drawWinScreen();
-    requestAnimationFrame(update);}    
+    requestAnimationFrame(checkWinner);}    
     
 const winImage = new Image();
 winImage.src = 'media/lose.png';
@@ -300,8 +300,8 @@ function won() {
 
 const doorB = () => {
     return keys.ArrowDown && player.onGround
-        && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
-        && player.positionY < 5 * GAME_TILE;};
+        && player.positionX > .5 * GAME_TILE && player.positionX < 3 * GAME_TILE;};
+    
     
 // START GAME LOOP
     
@@ -351,10 +351,6 @@ function gameLoop(timestamp) {
         player.velocityY = -jumpStrength;
         player.onGround = false;}
     
-    if (keys.ArrowDown && player.onGround
-        && player.positionX > .5 * GAME_TILE && player.positionX < 3 * GAME_TILE){
-            triggerWinner();}
-
     player.positionX = Math.max(0, Math.min(player.positionX, LEVEL_WIDTH - player.width));
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
 
