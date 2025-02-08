@@ -246,8 +246,7 @@ function isCollidingWithWall(nextX, nextY, direction) {
     
 function checkLoser() {
     lost();
-    drawLoseScreen();
-    requestAnimationFrame(checkLoser);}    
+    drawLoseScreen();}    
 
 const loseImage = new Image();
 loseImage.src = 'media/lose.png';
@@ -277,8 +276,7 @@ const doorA = () => {
 
 function checkWinner() {
     won();
-    drawWinScreen();
-    requestAnimationFrame(checkWinner);}    
+    drawWinScreen();}    
     
 const winImage = new Image();
 winImage.src = 'media/lose.png';
