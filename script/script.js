@@ -115,7 +115,7 @@ window.addEventListener('load', function() {
     const IMAGE_COLS = TILE_IMAGE.width / IMAGE_TILE;
 
 
-// Rendering the Tile Map?
+// Rendering the Tile Map
     
 function drawLevel() {
     for (let row = 0; row < ROWS; row++) {
@@ -213,7 +213,7 @@ function drawPlayer(ctx) {
             player.currentFrame %= totalRunningFrames;}}}    
 
 
-// keyup, keydown
+// keys
 
 const keys = {
     ArrowLeft: false,
@@ -228,7 +228,6 @@ window.addEventListener('keydown', function(event) {
 window.addEventListener('keyup', function(event) {
     if (event.key in keys) {
         keys[event.key] = false;}});
-
 
 // Tile Collision Detection for Left and Right
 
@@ -246,7 +245,8 @@ function isCollidingWithWall(nextX, nextY, direction) {
     
 function checkLoser() {
     lost();
-    drawLoseScreen();}    
+    drawLoseScreen();
+    return true;}    
 
 const loseImage = new Image();
 loseImage.src = 'media/lose.png';
@@ -328,14 +328,16 @@ function gameLoop(timestamp) {
 
     let moveSpeed = player.speed * deltaTime * 60;
 
-    if (keys.ArrowLeft) {
-        player.state = 'running';
-        player.direction = 'left';
-        const nextX = player.positionX - moveSpeed;
-        if (!isCollidingWithWall(nextX, player.positionY, 'left')) {
-            player.positionX = nextX;}}
+if (keys.ArrowLeft && hasWon === false && hasLost === false) {
+    player.state = 'running';
+    player.direction = 'left';
+    const nextX = player.positionX - moveSpeed;
+    if (!isCollidingWithWall(nextX, player.positionY, 'left')) {
+        player.positionX = nextX;
+    }
+}
 
-    if (keys.ArrowRight) {
+    if (keys.ArrowRight && hasLost === false && hasWon === false) {
         player.state = 'running';
         player.direction = 'right';
         const nextX = player.positionX + moveSpeed;
@@ -345,7 +347,7 @@ function gameLoop(timestamp) {
     if (!keys.ArrowLeft && !keys.ArrowRight) {
         player.state = 'idle';}
 
-    if (keys.ArrowUp && player.onGround && player.positionY > 0) {
+    if (keys.ArrowUp && hasWon === false && player.onGround && player.positionY > 0) {
         player.velocityY = -jumpStrength;
         player.onGround = false;}
     
@@ -353,10 +355,11 @@ function gameLoop(timestamp) {
     player.positionY = Math.max(0, Math.min(player.positionY, LEVEL_HEIGHT - player.height));
 
     drawPlayer(ctx);
-    requestAnimationFrame(gameLoop);
 
     checkWinner();
-    checkLoser();}
+    checkLoser();
+
+    requestAnimationFrame(gameLoop);}
     
 // END GAME LOOP  
     
