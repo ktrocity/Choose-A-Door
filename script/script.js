@@ -148,7 +148,7 @@ const player = {
     state: 'idle',
     direction: 'left',
     frameTimer: 0,
-    frameDelay: 6,
+    frameDelay: 17,
     velocityY: 30,
     onGround: false};
 
@@ -246,7 +246,7 @@ function isCollidingWithWall(nextX, nextY, direction) {
 function checkLoser() {
     lost();
     drawLoseScreen();
-    return true;}    
+    drawPlayer(ctx);}    
 
 const loseImage = new Image();
 loseImage.src = 'media/lose.png';
@@ -258,8 +258,8 @@ function triggerLoser() {
 
 function drawLoseScreen() {
     if (hasLost) {
-        const positionX = 20.5 * GAME_TILE;
-        const positionY = 1 * GAME_TILE;
+        const positionX = 20 * GAME_TILE;
+        const positionY = 0 * GAME_TILE;
         ctx.drawImage(loseImage, positionX, positionY);}}
 
 function lost() {
@@ -271,12 +271,12 @@ const doorA = () => {
         && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
         && player.positionY < 5 * GAME_TILE;};
 
-
 // Winning Animation 
 
 function checkWinner() {
     won();
-    drawWinScreen();}    
+    drawWinScreen();
+    drawPlayer(ctx);}    
     
 const winImage = new Image();
 winImage.src = 'media/lose.png';
@@ -288,8 +288,8 @@ function triggerWinner() {
     
 function drawWinScreen() {
     if (hasWon) {
-        const positionX = 2.5 * GAME_TILE;
-        const positionY = 7 * GAME_TILE;
+        const positionX = 2 * GAME_TILE;
+        const positionY = 6 * GAME_TILE;
         ctx.drawImage(winImage, positionX, positionY);}}
     
 function won() {
