@@ -282,7 +282,7 @@ function lost() {
         triggerLoser();}}
 
 const doorA = () => {
-    return keys.ArrowDown && player.onGround
+    return keys.ArrowDown && player.onGround && !keys.ArrowLeft && !keys.ArrowRight
         && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
         && player.positionY < 5 * GAME_TILE;};
 
@@ -330,7 +330,7 @@ function won() {
         triggerWinner();}}
 
 const doorB = () => {
-    return keys.ArrowDown && player.onGround
+    return keys.ArrowDown && player.onGround && !keys.ArrowLeft && !keys.ArrowRight
         && player.positionX > .5 * GAME_TILE && player.positionX < 3 * GAME_TILE;};
     
 winVideo.addEventListener("ended", () => {
