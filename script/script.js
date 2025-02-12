@@ -213,7 +213,7 @@ function drawPlayer(ctx) {
             player.currentFrame %= totalRunningFrames;}}}    
 
 
-// keys
+// keys that do stuff later
 
 const keys = {
     ArrowLeft: false,
@@ -249,20 +249,20 @@ function checkLoser() {
     drawEnd();}
 
 const loseVideo = document.createElement("video");
-loseVideo.src = "media/door/doorB.mp4";
+loseVideo.src = "media/door/doorA.mp4";
     
 const loseImage = new Image();
 loseImage.src = 'media/lose.png';
 
-function drawVideoFrame(ctx) {
+function drawLosingVideoFrame(ctx) {
     if (!loseVideo.ended) {
         ctx.drawImage(loseVideo, 20 * GAME_TILE, 0 * GAME_TILE, 2 * GAME_TILE, 4 * GAME_TILE);
-        requestAnimationFrame(() => drawVideoFrame(ctx));
+        requestAnimationFrame(() => drawLosingVideoFrame(ctx));
         drawPlayer(ctx);}}
 
 loseVideo.addEventListener("loadeddata", () => {
     loseVideo.play();
-    drawVideoFrame(ctx);});
+    drawLosingVideoFrame(ctx);});
 
 let hasLost = false;
 
@@ -293,11 +293,24 @@ loseVideo.addEventListener("ended", () => {
 
 function checkWinner() {
     won();
-    drawWinScreen();
-    drawPlayer(ctx);}    
+    drawWinScreen()
+    drawEne();}    
+    
+const winVideo = document.createElement("video");
+winVideo.src = "media/door/doorB.mp4";
+
+function drawWinningVideoFrame(ctx) {
+    if (!winVideo.ended) {
+        ctx.drawImage(winVideo, 2 * GAME_TILE, 6 * GAME_TILE, 2 * GAME_TILE, 4 * GAME_TILE);
+        requestAnimationFrame(() => drawWinningVideoFrame(ctx));
+        drawPlayer(ctx);}}
+
+winVideo.addEventListener("loadeddata", () => {
+    winVideo.play();
+    drawWinningVideoFrame(ctx);});    
     
 const winImage = new Image();
-winImage.src = 'media/lose.png';
+winImage.src = 'media/win.png';
     
 let hasWon = false;
     
@@ -306,9 +319,11 @@ function triggerWinner() {
     
 function drawWinScreen() {
     if (hasWon) {
-        const positionX = 2 * GAME_TILE;
-        const positionY = 6 * GAME_TILE;
-        ctx.drawImage(winImage, positionX, positionY);}}
+        winVideo.play();}}  
+    
+function drawEne() {
+    if (hasWon) {
+        ctx.drawImage();}}     
     
 function won() {
     if (doorB()) {
@@ -318,8 +333,10 @@ const doorB = () => {
     return keys.ArrowDown && player.onGround
         && player.positionX > .5 * GAME_TILE && player.positionX < 3 * GAME_TILE;};
     
+winVideo.addEventListener("ended", () => {
+    hasWon = false;});    
     
-// START GAME LOOP
+// THE GAME LOOP
     
 function gameLoop(timestamp) {
     const deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
@@ -351,9 +368,7 @@ if (keys.ArrowLeft && hasWon === false && hasLost === false) {
     player.direction = 'left';
     const nextX = player.positionX - moveSpeed;
     if (!isCollidingWithWall(nextX, player.positionY, 'left')) {
-        player.positionX = nextX;
-    }
-}
+        player.positionX = nextX;}}
 
     if (keys.ArrowRight && hasLost === false && hasWon === false) {
         player.state = 'running';
@@ -378,10 +393,8 @@ if (keys.ArrowLeft && hasWon === false && hasLost === false) {
     checkLoser();
 
     requestAnimationFrame(gameLoop);}
-    
-// END GAME LOOP  
-    
-// Grid On/Off
+        
+// THE OFF-CANVAS BUTTONS
 
 const debugButton = document.getElementById('debugButton');
 debugButton.addEventListener('click', function() {
