@@ -245,11 +245,24 @@ function isCollidingWithWall(nextX, nextY, direction) {
     
 function checkLoser() {
     lost();
-    drawLoseScreen();
-    drawPlayer(ctx);}    
+    drawLoseScreen()
+    drawEnd();}
 
+const loseVideo = document.createElement("video");
+loseVideo.src = "media/door/doorB.mp4";
+    
 const loseImage = new Image();
 loseImage.src = 'media/lose.png';
+
+function drawVideoFrame(ctx) {
+    if (!loseVideo.ended) {
+        ctx.drawImage(loseVideo, 20 * GAME_TILE, 0 * GAME_TILE, 2 * GAME_TILE, 4 * GAME_TILE);
+        requestAnimationFrame(() => drawVideoFrame(ctx));
+        drawPlayer(ctx);}}
+
+loseVideo.addEventListener("loadeddata", () => {
+    loseVideo.play();
+    drawVideoFrame(ctx);});
 
 let hasLost = false;
 
@@ -258,18 +271,23 @@ function triggerLoser() {
 
 function drawLoseScreen() {
     if (hasLost) {
-        const positionX = 20 * GAME_TILE;
-        const positionY = 0 * GAME_TILE;
-        ctx.drawImage(loseImage, positionX, positionY);}}
+        loseVideo.play();}}
+    
+function drawEnd() {
+    if (hasLost) {
+        ctx.drawImage();}}    
 
 function lost() {
     if (doorA()) {
         triggerLoser();}}
 
-const doorA = () => {  
+const doorA = () => {
     return keys.ArrowDown && player.onGround
         && player.positionX > 18 * GAME_TILE && player.positionX < 21 * GAME_TILE
         && player.positionY < 5 * GAME_TILE;};
+
+loseVideo.addEventListener("ended", () => {
+    hasLost = false;});
 
 // Winning Animation 
 
