@@ -87,8 +87,8 @@ const COLLISIONS_VERTICAL = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,];
 
-const jumpStrength = 30;
-const gravity = 1.5;    
+const jumpStrength = 35;
+const gravity = 2;    
 
 function startJump() {
     if (player.onGround) {
@@ -245,7 +245,6 @@ function isCollidingWithWall(nextX, nextY, direction) {
     
 function checkLoser() {
     lost();
-    drawLoseScreen()
     drawEnd();}
 
 const loseVideo = document.createElement("video");
@@ -268,10 +267,6 @@ let hasLost = false;
 
 function triggerLoser() {
     hasLost = true;}
-
-function drawLoseScreen() {
-    if (hasLost) {
-        loseVideo.play();}}
     
 function drawEnd() {
     if (hasLost) {
@@ -279,7 +274,8 @@ function drawEnd() {
 
 function lost() {
     if (doorA()) {
-        triggerLoser();}}
+        triggerLoser();
+        loseVideo.play();}}
 
 const doorA = () => {
     return keys.ArrowDown && player.onGround && !keys.ArrowLeft && !keys.ArrowRight
@@ -290,10 +286,14 @@ loseVideo.addEventListener("ended", () => {
     hasLost = false;});
 
 // Winning Animation 
+    
+function won() {
+    if (doorB()) {
+        triggerWinner();
+        winVideo.play();}}    
 
 function checkWinner() {
     won();
-    drawWinScreen()
     drawEne();}    
     
 const winVideo = document.createElement("video");
@@ -317,17 +317,9 @@ let hasWon = false;
 function triggerWinner() {
     hasWon = true;}
     
-function drawWinScreen() {
-    if (hasWon) {
-        winVideo.play();}}  
-    
 function drawEne() {
     if (hasWon) {
         ctx.drawImage();}}     
-    
-function won() {
-    if (doorB()) {
-        triggerWinner();}}
 
 const doorB = () => {
     return keys.ArrowDown && player.onGround && !keys.ArrowLeft && !keys.ArrowRight
