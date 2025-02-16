@@ -244,8 +244,7 @@ function isCollidingWithWall(nextX, nextY, direction) {
 // Losing Animation 
     
 function checkLoser() {
-    lost();
-    drawEnd();}
+    lost();}
 
 const loseVideo = document.createElement("video");
 loseVideo.src = "media/door/doorA.mp4";
@@ -266,16 +265,13 @@ loseVideo.addEventListener("loadeddata", () => {
 let hasLost = false;
 
 function triggerLoser() {
-    hasLost = true;}
-    
-function drawEnd() {
-    if (hasLost) {
-        ctx.drawImage();}}    
+    hasLost = true;}  
 
 function lost() {
     if (doorA()) {
         triggerLoser();
-        loseVideo.play();}}
+        loseVideo.play();
+        ctx.drawImage();}}
 
 const doorA = () => {
     return keys.ArrowDown && player.onGround && !keys.ArrowLeft && !keys.ArrowRight
@@ -290,11 +286,11 @@ loseVideo.addEventListener("ended", () => {
 function won() {
     if (doorB()) {
         triggerWinner();
-        winVideo.play();}}    
+        winVideo.play();
+        ctx.drawImage();}}    
 
 function checkWinner() {
-    won();
-    drawEne();}    
+    won();}    
     
 const winVideo = document.createElement("video");
 winVideo.src = "media/door/doorB.mp4";
@@ -316,10 +312,6 @@ let hasWon = false;
     
 function triggerWinner() {
     hasWon = true;}
-    
-function drawEne() {
-    if (hasWon) {
-        ctx.drawImage();}}     
 
 const doorB = () => {
     return keys.ArrowDown && player.onGround && !keys.ArrowLeft && !keys.ArrowRight
