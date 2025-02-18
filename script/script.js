@@ -140,7 +140,7 @@ function drawLevel() {
 const player = {
     positionX: 12 * GAME_TILE,
     positionY: 0,
-    speed: 8,
+    speed: 7,
     width: 4 * GAME_TILE,
     height: 4 * GAME_TILE,
     currentFrame: 0,
