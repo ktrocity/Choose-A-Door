@@ -140,7 +140,7 @@ function drawLevel() {
 const player = {
     positionX: 12 * GAME_TILE,
     positionY: 0,
-    speed: 10,
+    speed: 8,
     width: 4 * GAME_TILE,
     height: 4 * GAME_TILE,
     currentFrame: 0,
@@ -148,7 +148,7 @@ const player = {
     state: 'idle',
     direction: 'left',
     frameTimer: 0,
-    frameDelay: 35,
+    frameDelay: 17,
     velocityY: 30,
     onGround: false};
 
