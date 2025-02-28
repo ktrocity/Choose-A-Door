@@ -242,6 +242,8 @@ function isCollidingWithWall(nextX, nextY, direction) {
     return false;}    
 
 // Losing Animation 
+
+let hasLost = false;    
     
 function checkLoser() {
     lost();}
@@ -261,8 +263,6 @@ function drawLosingVideoFrame(ctx) {
 loseVideo.addEventListener("loadeddata", () => {
     loseVideo.play();
     drawLosingVideoFrame(ctx);});
-
-let hasLost = false;
 
 function triggerLoser() {
     hasLost = true;}  
